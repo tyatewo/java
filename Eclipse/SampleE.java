@@ -56,3 +56,8 @@ public class Main {
 // ・byteはデータの大きさを代入するときに使う
 // ・short、int、longの違いは表現できる値の範囲だけ
 // ・基本的にはint型を使う
+
+// valueOfはさまざまな型をString型に変換することができる。
+// 引数に指定した様々な型の値をString型の文字列として返す。
+// String.valueOf(変換する値);
+// 数値(int)真偽値(boolean)日付型(Date)などStringに変換可能
