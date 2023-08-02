@@ -96,3 +96,32 @@ public class Main {
 //要素の中身とインデックス番号を分けて考えていたけど、
 //その考えが必要なのは、今のところ拡張for文の時だけ
 //numbers[i]はあくまでも処理された整数を入れておくだけの箱の名前
+
+
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Your code here!
+    int[] numbers = new int[20];
+
+    for(int i = 0; i < numbers.length; i++) {
+      numbers[i] = i + 5;
+    }
+
+    for(int i = 0; i < numbers.length; i++){
+      if(i <= 10 && numbers[i] % 2 != 0){
+          System.out.print(numbers[i]);
+          if(i == 10) {
+              System.out.println();
+          }
+          if(i < 10) {
+              System.out.print(",");
+          }
+      } else if(i >= 11 && numbers[i] % 2 == 0){
+          System.out.print(numbers[i]);
+              System.out.print(",");
+          }
+      }
+    }
+    }
+}
