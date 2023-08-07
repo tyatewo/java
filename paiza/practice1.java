@@ -31,3 +31,55 @@ public class HelloWorld extends HttpServlet {
 // PrintWriter out...サーブレットでhtmlを直接出力するためにつかう
 
 // out.println("<html><head>paiza</head><body>");...webページの出力として引数のテキストを表示する
+
+
+
+//###########################################################################################################
+// servlet:サーバー上でjavaを実行する技術
+// JSP:htmlの中にjavaのコードを埋め込んで動的にwebページを生成する技術
+// tomcat:servletやJSPをじっこうするサーバーアプリケーション
+
+
+// javaではソースコードを「java」という拡張子のファイルとして記述する。
+// それをコンパイルして「class」という拡張子のファイルとして変換する。
+// 複数のコードやライブラリがある場合は、それらをまとめて「jar」というファイルで配布することができる。
+
+
+// サーブレットの実行に必要なディレクトリ
+// mywork(自分で作ったディレクトリ)の中にWEB-INFディレクトリ
+// WEB-INFの中にclassesディレクトリ
+// classesディレクトリの中ににコンパイルしたclassファイルを移動させる
+
+// ブラウザからのアクセスに合わせて、どのクラスを実行するかを指定する
+// その為にWEB-INFの中にweb.xmlファイルを作る
+
+// web.xmlファイル
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+        http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+        version="4.0" metadata-complete="true">
+
+    <servlet>
+        <servlet-name>Hello</servlet-name>
+        <servlet-class>HelloWorld</servlet-class>　　//←呼び出すサーブレット
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Hello</servlet-name>
+        <url-pattern>/hello</url-pattern>　　//←呼び出しパス　ブラウザで「/hello」と入力するとHelloWorld食わすファイルを呼び出すことになる。
+    </servlet-mapping>
+
+</web-app>
+
+// ブラウザからのアクセスをどのサーブレットに割り当てるかを指定している。
+// これで、ブラウザから~cloud:8080/mywork/hello/と指定すると
+// ###############
+// paiza
+
+// Hello World!
+// ###############
+// このように表示される。
+
+// うまくいかないとき…
+// ソースコードやコンパイルに入力ミスがないか、作成したディレクトリ名やweb.xmlが違っていないか確認
