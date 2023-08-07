@@ -83,3 +83,33 @@ public class HelloWorld extends HttpServlet {
 
 // うまくいかないとき…
 // ソースコードやコンパイルに入力ミスがないか、作成したディレクトリ名やweb.xmlが違っていないか確認
+
+//###########################################################################################################
+
+
+// ＠tomcatの再起動を不要にする（起動したまま編集してもリロードで更新してくれる。停止する必要がない）
+// tomcat/conf/Catalina/localhost/mywork.xml
+
+// mywork.xmlファイルに下記のように書く。
+<Context
+reloadable="true"/>
+
+
+// WEB-INFはサーバーからアクセス呼び出せるけどユーザーからアクセスできないディレクトリ。
+// WEB-INFの上位のディレクトリにあるファイルはユーザーが直接アクセスできてしまう。
+
+
+
+// Webページを表示するHelloServlet.javaというプログラムを作成してコンパイルしてあります。
+// 「/info」というパスにアクセスしたとき、このクラスを実行するように修正してください。
+
+<servlet>
+        <servlet-name>Servlet</servlet-name>
+        <servlet-class>HelloServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet</servlet-name>
+        <url-pattern>/info</url-pattern>
+    </servlet-mapping>
+
+// ブラウザでmywork/infoで入力するとHelloServletクラスのものが表示される。
