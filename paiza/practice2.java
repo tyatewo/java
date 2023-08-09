@@ -265,3 +265,142 @@ web.xmlはclassしか呼び出せないからコンパイルする必要があ�
 
 
 
+
+!!RPGの行動選択画面作成!!
+
+勇者のメニュー                     勇者のアクション
+test　　　　　　　　　　　　　　　　勇者は、荒野を歩いていた。
+あるく　　　　　　　　　　　　　　　メニューに戻る
+たたかう
+
+/menu　　　　　　　　　　　　　　　/walk
+Menu.class                         Walk.class
+menu.jsp                           action.jsp
+
+
+
+
+まずroutingせってい
+
+web.xmlファイル
+　　<servlet>
+        <servlet-name>RPGManu</servlet-name>
+        <servlet-class>Menu</servlet-class>class名（ファイル名）
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RPGManu</servlet-name>
+        <url-pattern>/menu</url-pattern>（ブラウザでのパス入力指定）
+    </servlet-mapping>
+
+
+Menu.javaファイル
+  import java.io.*;
+  import javax.servlet.*;
+  import javax.servlet.http.*;
+
+  public class Menu extends HttpServlet {
+
+      public void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException {
+
+          String view = "/WEB-INF/views/menu.jsp";
+          RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+          dispatcher.forward(request, response);
+      }
+  }
+
+
+
+Javaファイルをコンパイルする
+  $ javac -classpath "../../lib/servlet-api.jar" -d WEB-INF/classes Menu.java
+  Menu.classにする
+
+
+
+menu.jspファイル
+  <%@ page language="java" contentType="text/html; charset=UTF-8"
+      pageEncoding="UTF-8"%>
+  <!DOCTYPE html>
+  <html>
+      <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+          <title>RPGの行動選択メニュー</title>
+      </head>
+      <body>
+          <h1>勇者のメニュー</h1>
+  	<p><a href="hello">test</a></p>
+  	<p><a href="walk">あるく</a></p>これを選択すると/walkを呼び出す。/を付けてなければ自動的にmywork以下のファイルを呼び出す。
+  	<p><a href="attack">たたかう</a></p>
+      </body>
+  </html>
+
+
+ここまでで、menu選択画面ができた。
+
+
+
+あるくのページを作る。
+
+
+勇者は、荒野を歩いていた。
+メニューに戻る
+
+/walk
+Walk.class
+action.jsp
+
+
+web.xml
+　　<servlet>
+        <servlet-name>RPGWalk</servlet-name>
+        <servlet-class>Walk</servlet-class>class名（ファイル名）
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RPGWalk</servlet-name>
+        <url-pattern>/walk</url-pattern>（ブラウザでのパス入力指定）
+    </servlet-mapping>
+
+
+
+Walk.javaファイル
+  import java.io.*;
+  import javax.servlet.*;
+  import javax.servlet.http.*;
+
+  public class Walk extends HttpServlet {
+
+      public void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException {
+
+  	String player = "勇者"; player変数に勇者を代入している
+  	request.setAttribute("name", player); nameというデータ名でplayerをAttoributeにsetしている
+  	request.setAttribute("message", player + "は、荒野を歩いていた。"); messageというデータ名でplayer + "は、荒野を歩いていた。"という文章をAttoributeにsetしている
+
+          String view = "/WEB-INF/views/action.jsp";
+          RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+          dispatcher.forward(request, response);
+      }
+  }
+
+
+
+Walk.javaファイルをコンパイルする
+  $ javac -classpath "../../lib/servlet-api.jar" -d WEB-INF/classes Walk.java
+  Walk.classにする
+
+
+action.jspファイル
+  <%@ page language="java" contentType="text/html; charset=UTF-8"
+      pageEncoding="UTF-8"%>
+  <!DOCTYPE html>
+  <html>
+      <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+          <title>RPGの行動選択メニュー</title>
+      </head>
+      <body>
+          <h1><%= request.getAttribute("name") %>のアクション</h1>
+  	<p><%= request.getAttribute("message") %></p>
+  	<p><a href= "menu">メニューに戻る</a></p>
+      </body>
+  </html>
