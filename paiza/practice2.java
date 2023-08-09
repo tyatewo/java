@@ -140,3 +140,128 @@ web.xmlファイルに追記する。
 
 
 jsp(表示)→servlet（制御）（jspもってる）→xmlでサーブレットのパス指定→ブラウザでパス入力→表示！
+
+
+
+
+
+
+
+
+Servletからjspにデータを渡す方法
+
+JSPファイルではjavaのコードを埋め込める
+このとき<%...%>を使う
+
+<%@...%>     JSPの宣言（ディレクティブ）
+<%!...%>　　　変数やメソッドの宣言
+<%=...%>　　　式の評価結果を出力
+<%...%>　　　　コードを実行
+<%--...--%>　　コメント
+
+ShowTemplate.javaファイル
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class ShowTemplate extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
+
+          request.setAttribute("message", "HelloWorld!");←jspにデータを渡すコード
+
+        String view = "/WEB-INF/views/index.jsp";
+        RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+        dispatcher.forward(request, response);
+    }
+}
+
+request.setAttribute("message", "HelloWorld!");←jspにデータを渡すコード
+の
+requestは
+doGet(HttpServletRequest request, HttpServletResponse response)doGetメソッドの引数で設定してある。
+
+doGetの材料は
+HttpServletRequestのrequestオブジェクトと
+HttpServletResponseのresponseオブジェクトで
+構成されている。
+
+setAttributeメソッドを呼び出す
+request.setAttribute("message", "HelloWorld!");
+（スコープのオブジェクト）.setAttribute(データ名, データ);
+requestオブジェクトにAttributeにデータをセットするとJSPがわでデータを取り出すことができる。
+
+ShowTemplate.javaファイルで書いた
+request.setAttribute("message", "HelloWorld!");←jspにデータを渡すコード
+を実際に受け取る
+
+index.jspファイル
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Hello Template</title>
+    </head>
+    <body>
+        <h1>Hello JSP</h1>
+        <strong><%= new java.util.Date() %></strong>
+
+        <% String message = (String)request.getAttribute("message");%> //追記
+        <p><%= message %></p> //追記
+    </body>
+</html>
+
+
+ShowTemplate.java
+request.setAttribute("message", "HelloWorld!");←jspにデータを渡すコード
+
+index.jspファイル
+<% String message = (String)request.getAttribute("message");%> //追記
+<p><%= message %></p> //追記 <%=で結果表示、、、"HelloWorld!"が出力される
+
+<% String message = (String)request.getAttribute("message");%>
+  (String)request.getAttribute("message");の戻り値をString messageに代入
+　％でJavaのコードを実行するときは末尾に;が必要
+<%= message %>
+　これは出力だけなので;は不要
+
+getAttributeメソッドで
+requestオブジェクトからデータを取り出している。
+
+Attribute=属性
+
+setAttribute()...特定の名前を目印に値を格納
+getAttribute()...setAttributeで付けた名前をもとに値を取り出す
+どこに格納？...request.setAttribute("message", "HelloWorld!");の場合、
+　　　　　　　requestの中に"message"という名前を付けた"HelloWorld!"という文字列を格納している。
+　　　　　　　session.setAttribute("str","Qiita");の場合、
+　　　　　　　sessionの中に"str"と名前を付けた"Qiita"という文字列が格納されている。
+取り出す時...　request.getAttribute("message");   (String)request.getAttribute("message");
+                         session.getAttribute("str");
+
+
+要約
+右の環境には、ServletとJSPで、Webページを表示するプログラムが作成してあります。
+このプログラムを修正して、ShowTemplate.javaからindex.jspに以下のデータを渡して、表示してください。
+
+Hello Servlet
+
+ShowTemplate.java（servlet）にindex.jsp(jsp)へ受け渡すメッセージを指定する
+request.setAttribute("message", "HelloServlet!");
+
+
+ShowTemplate.javaをコンパイルする
+（Javaファイルのあるディレクトリに移動してから）
+$ javac -classpath "../../lib/servlet-api.jar" -d WEB-INF/classes ShowTemplate.java
+ShowTemplate.classにする
+
+web.xmlはclassしか呼び出せないからコンパイルする必要がある。
+
+
+
+
+
+
